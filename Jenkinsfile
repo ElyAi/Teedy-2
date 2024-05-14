@@ -20,11 +20,6 @@ pipeline {
             steps {
                 sh 'mvn pmd:pmd'
             }
-            post {
-                always {
-                    archiveArtifacts artifacts: '**/target/pmd.html', fingerprint: true
-                }
-            }
         }
         stage('Test report') {
             steps {
