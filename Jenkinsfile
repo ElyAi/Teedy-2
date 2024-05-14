@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Test report') {
             steps {
-                sh 'mvn javadoc：test-javadoc'
+                sh 'mvn javadoc:test-javadoc'
             }
         }
     }
