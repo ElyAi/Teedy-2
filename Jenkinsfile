@@ -10,23 +10,37 @@ pipeline {
             steps {
                 sh 'mvn javadoc:jar --fail-never'
             }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/target/*-javadoc.jar', fingerprint: true
+                }
+            }
         }
         stage('pmd') {
             steps {
                 sh 'mvn pmd:pmd'
             }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/target/pmd.html', fingerprint: true
+                }
+            }
         }
         stage('Test report') {
             steps {
-                sh 'mvn javadoc:test-javadoc'
+                sh 'mvn test --fail-never'
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
             }
         }
     }
     post {
         always {
-            archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
-            archiveArtifacts artifacts: '**/target/**/*.jar', fingerprint: true
-            archiveArtifacts artifacts: '**/target/**/*.war', fingerprint: true
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
         }
     }
 }
